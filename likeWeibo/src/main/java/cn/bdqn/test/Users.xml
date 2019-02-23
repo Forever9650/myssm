@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="cn.bdqn.test.Users">
+        <table name="users" schema="zijiwan" catalog=""/>
+        <attributes>
+            <id name="userid">
+                <column name="userid" precision="11"/>
+            </id>
+            <basic name="username">
+                <column name="username" length="20"/>
+            </basic>
+            <basic name="password">
+                <column name="password" length="20"/>
+            </basic>
+            <basic name="headImage">
+                <column name="headImage" nullable="false" length="1000"/>
+            </basic>
+            <basic name="phone">
+                <column name="phone" nullable="false" length="15"/>
+            </basic>
+            <basic name="email">
+                <column name="email" nullable="false" length="50"/>
+            </basic>
+            <basic name="role">
+                <column name="role" nullable="false" precision="4"/>
+            </basic>
+            <basic name="status">
+                <column name="status" precision="11"/>
+            </basic>
+            <basic name="signature">
+                <column name="signature" nullable="false" length="100"/>
+            </basic>
+            <basic name="ucreateDate">
+                <column name="ucreateDate" precision="-1"/>
+            </basic>
+            <basic name="age">
+                <column name="age" nullable="false" precision="3"/>
+            </basic>
+            <basic name="sex">
+                <column name="sex" nullable="false" precision="2"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

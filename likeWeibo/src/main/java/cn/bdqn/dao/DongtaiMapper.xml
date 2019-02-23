@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.dao.DongtaiMapper">
+    <insert id="addDongtai" parameterType="dongtai">
+        insert into dongtai values (null,#{dtcontent},#{dtImage},#{user_id},#{topic_id},now(),#{dtStatus},0,0)
+    </insert>
+    <update id="updateDongtai" parameterType="dongtai">
+        update dongtai set dtStatus=#{dtStatus} ,set likeCount=#{likeCount},set forCount=#{forCount} where dtid=#{dtid}
+    </update>
+    <delete id="deleteDongtai" parameterType="integer" >
+        delete from dongtai where dtid=#{dtid}
+    </delete>
+    <!--//查看全部，有通过用户id查 ， 通过话题查topic_id ,内容的模糊查询-->
+    <select id="queryAllOthers" resultMap="dongtaiR">
+        select * from dongtai d , users u , topic t where d.topic_id=t.tpid and  d.user_id=u.userid and dtStatus=0
+        <if test="userid != null and userid!= 0">
+            and d.user_id=#{userid}
+        </if>
+        <if test="topicid != null and topicid != 0">
+            and d.topic_id=#{topicid}
+        </if>
+        and dtStatus =0
+        <if test="dtcontent != null and dtcontent !=''">
+            and d.dtcontent like concat('%',#{dtcontent},'%')
+        </if>
+        /*1按时间倒序排*/
+        <if test="sort == 1 or sort==null">
+          order  by d.dtid desc
+        </if>
+        <if test="sort == 2">
+            order by d.likeCount desc
+        </if>
+
+    </select>
+    <select id="queryAllSelf" resultType="dongtai">
+        select * from dongtai d , users u
+        where d.user_id = u.userid and  user_id=#{userid}
+        order by dtid desc
+    </select>
+    <!--//查看自己关注的人的动态 isIncl 1包括自己 2不包括自己-->
+    <select id="queryLikeDongtai" resultType="dongtai">
+          SELECT * FROM dongtai d ,users u WHERE d.user_id=u.userid and d.dtStatus=0 and d.`user_id` IN(SELECT r.`likeUserId` FROM relation r WHERE r.`user_id`=#{userid}
+              <if test="isIncl==1">
+                OR #{userid}
+              </if>  )
+              order by dtid desc
+           )
+    </select>
+    <resultMap id="dongtaiR" type="dongtai">
+        <id column="dtid" property="dtid"></id>
+
+        <association property="topic" javaType="topic">
+            <id column="tpid" property="tpid"></id>
+
+        </association>
+    </resultMap>
+    <select id="queryULike" resultMap="dongtaiR" parameterType="list" >
+        select  * from dongtai d , users u , topic t where t.tpid=d.topic_id and d.user_id =u.userid and d.dtStatus=0
+
+        and d.user_id in <foreach collection="list" open="(" separator="," close=")" item="useridList" >
+        #{useridList}
+    </foreach>
+        order by d.dtid desc
+
+    </select>
+    <select id="queryLikeUserId" resultType="integer" parameterType="integer">
+        select likeUserId from relation where user_id=#{userid}
+    </select>
+</mapper>   

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="cn.bdqn.test.Dongtai">
+        <table name="dongtai" schema="zijiwan" catalog=""/>
+        <attributes>
+            <id name="dtid">
+                <column name="dtid" precision="11"/>
+            </id>
+            <basic name="dtcontent">
+                <column name="dtcontent" length="500"/>
+            </basic>
+            <basic name="dtImage">
+                <column name="dtImage" nullable="false" length="500"/>
+            </basic>
+            <basic name="userId">
+                <column name="user_id" precision="11"/>
+            </basic>
+            <basic name="topicId">
+                <column name="topic_id" nullable="false" precision="11"/>
+            </basic>
+            <basic name="dtcreatDate">
+                <column name="dtcreatDate" precision="-1"/>
+            </basic>
+            <basic name="dtStatus">
+                <column name="dtStatus" nullable="false" precision="2"/>
+            </basic>
+            <basic name="likeCount">
+                <column name="likeCount" nullable="false" precision="11"/>
+            </basic>
+            <basic name="forCount">
+                <column name="forCount" nullable="false" precision="11"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

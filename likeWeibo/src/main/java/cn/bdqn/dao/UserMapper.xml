@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.dao.UserMapper">
+    <select id="login" resultType="user" parameterType="user">
+        select * from users where username=#{username} or phone=#{username} and password=#{password}
+    </select>
+    <insert id="add" parameterType="User" >
+        insert into users values()
+    </insert>
+    <select id="queryAll" resultType="user">
+        select * from users
+        <where>
+            <if test="username!=null and username!=''">
+                username like concat('%',#{username},'%')
+                or phone = #{username}
+            </if>
+
+        </where>
+    </select>
+    <insert id="addUser" parameterType="user" >
+        insert into users values(null,#{username},#{password},#{headImage},#{phone},#{email},2,1,"还没有设置签名",now(),0,0)
+    </insert>
+    <update id="updateUser" parameterType="user">
+        update users set headImage=#{headImage},phone=#{phone},age=#{age},sex=#{sex},signature=#{signature},email=#{email} where userid=#{userid}
+    </update>
+
+<!--woguanzhu-->
+    <select id="queryUserWhoILike" resultType="user" parameterType="integer">
+        select * from users u where u.`userid`in (SELECT r.`likeUserId` FROM relation r WHERE r.`user_id`=#{userid} ORDER BY r.`relationid` DESC)
+
+    </select>
+    <!--关注我的-->
+    <select id="queryUserWhoLikeMe" parameterType="integer" resultType="user">
+        select * from users u where u.`userid`in (SELECT r.`user_id` FROM relation r WHERE r.`likeUserId`=#{userid} ORDER BY r.`relationid` DESC)
+    </select>
+</mapper>

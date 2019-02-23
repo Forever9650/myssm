@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.dao.TopicMapper">
+    <select id="queryAll" resultType="topic">
+        select * from topic order by hot desc
+        limit #{start},#{pageSize}
+    </select>
+    <select id="queryCount" resultType="integer">
+        select count(*) from topic
+    </select>
+</mapper>
